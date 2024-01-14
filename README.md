@@ -41,10 +41,12 @@ To get started with the project, follow these instructions.
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/ken314526/sub-zza.git`
+1. Clone the repository: `git clone https://github.com/ken314526/Sub-Zza-Food-Delivery-Website-Application.git`
 2. Navigate to the project directory: `cd sub-zza`
 3. Install dependencies:
+
    - For Client Side:
+
    ```bash
    # Install client-side dependencies
    cd react-client
@@ -52,6 +54,7 @@ To get started with the project, follow these instructions.
    ```
 
    - For Server Side:
+
    ```bash
    # Install server-side dependencies
    cd node-server

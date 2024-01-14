@@ -30,7 +30,7 @@ export default function AdminNavbar() {
                 Orders List
               </Link>
             </li>
-          </ul>{" "}
+          </ul>
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ To get started with the project, follow these instructions.
 
 ### Installation
 
-1. Clone the repository: `git clone https://github.com/ken314526/Sub-Zza-Food-Delivery-Website-Application.git`
+1. Clone the repository: `git clone https://github.com/ken314526/Sub-Zza-Food-Delivery-Application.git`
 2. Navigate to the project directory: `cd sub-zza`
 3. Install dependencies:
 

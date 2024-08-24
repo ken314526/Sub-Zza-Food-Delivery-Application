@@ -15,9 +15,9 @@ router.post("/register", async (req, res) => {
     });
 
     await user.save();
-    res.status(200).json("User registered successfully.");
+    return res.status(200).json("User registered successfully.");
   } catch (err) {
-    res.status(500).json("User registeration unsuccessful.");
+    return res.status(500).json("User registeration unsuccessful.");
   }
 });
 
@@ -28,22 +28,22 @@ router.post("/login", async (req, res) => {
 
     bcrypt.compare(password, user.password, function (err, result) {
       if (result) {
-        res.status(200).json(user);
+        return res.status(200).json(user);
       } else {
         res.json("error");
       }
     });
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
 router.get("/getallusers", async (req, res) => {
   try {
     const users = await User.find({});
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -51,9 +51,9 @@ router.post("/deleteuser", async (req, res) => {
   const userid = req.body.userid;
   try {
     await User.findByIdAndDelete(userid);
-    res.status(200).json("User Deleted Successfully.");
+    return res.status(200).json("User Deleted Successfully.");
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 

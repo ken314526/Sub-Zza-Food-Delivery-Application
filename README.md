@@ -42,7 +42,7 @@ To get started with the project, follow these instructions.
 ### Installation
 
 1. Clone the repository: `git clone https://github.com/ken314526/Sub-Zza-Food-Delivery-Application.git`
-2. Navigate to the project directory: `cd sub-zza`
+2. Navigate to the project directory: `cd Sub-Zza-Food-Delivery-Application`
 3. Install dependencies:
 
    - For Client Side:
@@ -50,7 +50,7 @@ To get started with the project, follow these instructions.
    ```bash
    # Install client-side dependencies
    cd react-client
-   npm install 
+   npm install
    ```
 
    - For Server Side:
@@ -58,22 +58,27 @@ To get started with the project, follow these instructions.
    ```bash
    # Install server-side dependencies
    cd node-server
-   npm install 
+   npm install
    ```
 
 ## Usage
 
-- Start the server: 
+- Start the server:
 
-    ```bash
-    cd node-server
-    npm start 
-    ```
+  ```bash
+  cd node-server
+  npm start
+  ```
+
 - Start the client:
 
-    ```bash
-    cd react-client 
-    npm start
-    ```
+  ```bash
+  cd react-client
+  npm start
+  ```
+
 - Your SUB-ZZA Website should now be accessible at http://localhost:3000
 
+## Author
+
+Developed by **Abhishek Sharma**

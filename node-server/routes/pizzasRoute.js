@@ -4,9 +4,9 @@ const Pizza = require("../models/pizzaModel");
 router.get("/getallpizzas", async (req, res) => {
   try {
     const pizzas = await Pizza.find({});
-    res.status(200).json(pizzas);
+    return res.status(200).json(pizzas);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -22,9 +22,9 @@ router.post("/addpizza", async (req, res, next) => {
       prices: [pizza.prices],
     });
     await newPizza.save();
-    res.status(200).json("Pizza Added Successfully.");
+    return res.status(200).json("Pizza Added Successfully.");
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -32,9 +32,9 @@ router.post("/getpizzabyid", async (req, res) => {
   const pizzid = req.body.pizzaid;
   try {
     const pizza = await Pizza.findById(pizzid);
-    res.status(200).json(pizza);
+    return res.status(200).json(pizza);
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -51,9 +51,9 @@ router.post("/editpizza", async (req, res) => {
 
     await pizza.save();
 
-    res.status(200).json("Pizza Updated Successfully.");
+    return res.status(200).json("Pizza Updated Successfully.");
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 
@@ -61,9 +61,9 @@ router.post("/deletepizza", async (req, res) => {
   const pizzaid = req.body.pizzaid;
   try {
     const pizza = await Pizza.findByIdAndDelete(pizzaid);
-    res.status(200).json("Pizza Deleted Successfully.");
+    return res.status(200).json("Pizza Deleted Successfully.");
   } catch (err) {
-    res.status(500).json(err);
+    return res.status(500).json(err);
   }
 });
 

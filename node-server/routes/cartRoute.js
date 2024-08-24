@@ -6,9 +6,9 @@ router.post("/getcartitem", async (req, res) => {
   try {
     const cartItem = await Cart.find({ userid: userid });
     if (cartItem) {
-      res.status(200).json(cartItem);
+      return res.status(200).json(cartItem);
     } else {
-      res.status(200).json([]);
+      return res.status(200).json([]);
     }
   } catch (err) {
     return res.status(500).json(err);
@@ -24,7 +24,7 @@ router.post("/updatecart", async (req, res) => {
       cartItems,
     });
     await cart.save();
-    res.status(200).json(cart);
+    return res.status(200).json(cart);
   } catch (err) {
     return res.status(500).json(err);
   }

@@ -20,16 +20,20 @@ app.use(
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  return res.status(200).send("<h1>Server running successfully!</h1>");
+});
+
 app.use("/api/pizzas/", pizzasRoute);
 app.use("/api/users/", userRoute);
 app.use("/api/orders/", ordersRoute);
 app.use("/api/cart/", cartRoute);
 
 if (process.env.NODE_ENV === "production") {
-  app.use("/", express.static("react-client/build"));
+  app.use("/", express.static("../react-client/build"));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "/react-client/build/index.html"));
+    res.sendFile(path.resolve(__dirname, "../react-client/build/index.html"));
   });
 }
 

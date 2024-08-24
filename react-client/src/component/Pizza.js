@@ -1,11 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { addToCart } from "../actions/cartActions";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { toast } from "react-toastify";
 
 export default function Pizza({ pizza }) {
   AOS.init();
@@ -19,6 +20,9 @@ export default function Pizza({ pizza }) {
   const handleShow = () => setShow(true);
 
   const addtocart = () => {
+    toast.info("Added to cart!", {
+      autoClose: 3000,
+    });
     dispatch(addToCart(pizza, quantity, varient));
   };
 

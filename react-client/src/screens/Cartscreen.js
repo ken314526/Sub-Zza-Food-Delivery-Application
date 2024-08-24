@@ -6,6 +6,7 @@ import "aos/dist/aos.css";
 import Loading from "../component/Loading";
 import Error from "../component/Error";
 import Success from "../component/Success";
+import { Link } from "react-router-dom";
 
 export default function Cartscreen() {
   AOS.init();
@@ -17,7 +18,8 @@ export default function Cartscreen() {
     (prevValue, item) => prevValue + item.price,
     0
   );
-  const currentUser = localStorage.getItem("currentUser");
+  const userState = useSelector((state) => state.loginUserReducer);
+  const { currentUser } = userState;
 
   const orderState = useSelector((state) => state.placeOrderReducer);
   const { loading, error, success } = orderState;
@@ -27,70 +29,83 @@ export default function Cartscreen() {
       <div className="row justify-content-center p-2">
         <div className="col-md-6">
           <h2 style={{ fontSize: "40px" }}>My Cart</h2>
-          {cartItems.map((item) => {
-            return (
-              <>
-                <hr />
-                <div className="flex-container">
-                  <div className="text-start m-1 w-100">
-                    <h1>
-                      {item.name} [{item.varient}]
-                    </h1>
-                    <h1>
-                      Price : {item.quantity} * {item.prices[0][item.varient]} ={" "}
-                      {item.price}
-                    </h1>
-                    <h1 style={{ display: "inline" }}>Quantity : </h1>
-                    <i
-                      style={{ cursor: "pointer" }}
-                      className="fa-sharp fa-solid fa-plus"
-                      onClick={() => {
-                        dispatch(
-                          addToCart(
-                            item,
-                            Number(item.quantity) + 1,
-                            item.varient
-                          )
-                        );
-                      }}
-                    ></i>
-                    <strong>{item.quantity}</strong>
-                    <i
-                      style={{ cursor: "pointer" }}
-                      className="fa-sharp fa-solid fa-minus"
-                      onClick={() => {
-                        dispatch(
-                          addToCart(
-                            item,
-                            Number(item.quantity) - 1,
-                            item.varient
-                          )
-                        );
-                      }}
-                    ></i>
-                  </div>
-
-                  <div className="m-1 w-100">
-                    <img
-                      src={item.image}
-                      alt=""
-                      style={{ height: "80px", width: "80px" }}
-                    />
-                  </div>
-
-                  <div className="m-1 w-100 mt-4">
-                    <i
-                      style={{ cursor: "pointer" }}
-                      className="fa-sharp fa-solid fa-trash"
-                      onClick={() => {
-                        dispatch(deleteFromCart(item));
-                      }}
-                    ></i>
-                  </div>
+          {cartItems.length === 0 ? (
+            <div className="container text-center py-5">
+              <div className="row">
+                <div className="col">
+                  <h1 className="display-4">No items added yet.</h1>
+                  <Link to="/" className="btn">
+                    Add Pizza Now!
+                  </Link>
                 </div>
-              </>
-            );
-          })}
+              </div>
+            </div>
+          ) : (
+            cartItems.map((item) => {
+              return (
+                <>
+                  <hr />
+                  <div className="flex-container">
+                    <div className="text-start m-1 w-100">
+                      <h1>
+                        {item.name} [{item.varient}]
+                      </h1>
+                      <h1>
+                        Price : {item.quantity} * {item.prices[0][item.varient]}{" "}
+                        = {item.price}
+                      </h1>
+                      <h1 style={{ display: "inline" }}>Quantity : </h1>
+                      <i
+                        style={{ cursor: "pointer" }}
+                        className="fa-sharp fa-solid fa-plus"
+                        onClick={() => {
+                          dispatch(
+                            addToCart(
+                              item,
+                              Number(item.quantity) + 1,
+                              item.varient
+                            )
+                          );
+                        }}
+                      ></i>
+                      <strong>{item.quantity}</strong>
+                      <i
+                        style={{ cursor: "pointer" }}
+                        className="fa-sharp fa-solid fa-minus"
+                        onClick={() => {
+                          dispatch(
+                            addToCart(
+                              item,
+                              Number(item.quantity) - 1,
+                              item.varient
+                            )
+                          );
+                        }}
+                      ></i>
+                    </div>
+
+                    <div className="m-1 w-100">
+                      <img
+                        src={item.image}
+                        alt=""
+                        style={{ height: "80px", width: "80px" }}
+                      />
+                    </div>
+
+                    <div className="m-1 w-100 mt-4">
+                      <i
+                        style={{ cursor: "pointer" }}
+                        className="fa-sharp fa-solid fa-trash"
+                        onClick={() => {
+                          dispatch(deleteFromCart(item));
+                        }}
+                      ></i>
+                    </div>
+                  </div>
+                </>
+              );
+            })
+          )}
         </div>
         {Number(subtotal) !== 0 && (
           <div className="col-md-4 text-end">

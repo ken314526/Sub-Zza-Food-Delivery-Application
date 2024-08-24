@@ -1,5 +1,4 @@
 import "./App.css";
-import bootstrap from "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import Navbar from "./component/Navbar";
 import Homescreen from "./screens/Homescreen";
@@ -16,9 +15,23 @@ import Orderslist from "./component/Orderslist";
 import Editpizza from "./component/Editpizza";
 import Payment from "./component/Payment";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import PageNotFound from "./component/PageNotFound";
+
+function addFontAwesomeCDN(url) {
+  const script = document.createElement("script");
+  script.src = url;
+  script.async = true;
+  document.body.appendChild(script);
+}
+
 function App() {
   return (
     <div className="App">
+      {addFontAwesomeCDN(process.env.REACT_APP_FONT_AWESOME_URL)}
+      <ToastContainer autoClose={3000} />
+
       <Navbar />
       <Router>
         <Routes>
@@ -37,6 +50,8 @@ function App() {
           <Route path="/admin/editpizza/:pizzaid" element={<Editpizza />} />
 
           <Route path="/cart/checkout" element={<Payment />} />
+
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </div>

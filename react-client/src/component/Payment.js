@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { placeOrder } from "../actions/orderActions";
 import Loading from "./Loading";
 import Error from "./Error";
 import Success from "./Success";
+import { toast } from "react-toastify";
 
 export default function Payment() {
   const dispatch = useDispatch();
   const orderState = useSelector((state) => state.placeOrderReducer);
   const { loading, error, success } = orderState;
-  const [paymentMethod, setPaymentMethod] = useState("card");
   const amount = localStorage.getItem("subtotal");
+  const userState = useSelector((state) => state.loginUserReducer);
+  const { currentUser } = userState;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,20 +21,58 @@ export default function Payment() {
   const [city, setCity] = useState("");
   const [pincode, setPincode] = useState("");
   const [paid, setPaid] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [validateName, setValidateName] = useState(false);
+  const [validateCNo, setValidateCNo] = useState(false);
+  const [validateDate, setValidateDate] = useState(false);
+  const [validateCVV, setValidateCVV] = useState(false);
+
+  useEffect(() => {
+    if (!currentUser) {
+      window.location.href = "/";
+    }
+  }, [currentUser]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      name === "" ||
+      email === "" ||
+      street === "" ||
+      country === "" ||
+      city === "" ||
+      pincode === ""
+    ) {
+      toast.error("Enter valid details!");
+      return;
+    }
+
+    if (
+      paymentMethod === "card" &&
+      (!validateName || !validateCNo || !validateDate || !validateCVV)
+    ) {
+      toast.error("Enter valid Card details!");
+      return;
+    }
+
     const userInfo = {
-      name: name,
-      email: email,
+      name,
+      email,
       address: {
-        street: street,
-        country: country,
-        city: city,
-        pincode: pincode,
+        street,
+        country,
+        city,
+        pincode,
       },
     };
+
+    setPaid(true);
     dispatch(placeOrder(userInfo, amount));
+  };
+
+  const handlePaymentMethodChange = (method) => {
+    setPaymentMethod(method);
   };
 
   return (
@@ -54,8 +94,8 @@ export default function Payment() {
                 onSubmit={handleSubmit}
               >
                 <div className="row g-3">
-                  <div className="col">
-                    <label for="lastName" className="form-label">
+                  <div className="col-12">
+                    <label htmlFor="name" className="form-label">
                       Full name
                     </label>
                     <input
@@ -64,15 +104,13 @@ export default function Payment() {
                       id="name"
                       placeholder="Full Name"
                       value={name}
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
+                      onChange={(e) => setName(e.target.value)}
                       required
                     />
                   </div>
 
                   <div className="col-12">
-                    <label for="email" className="form-label">
+                    <label htmlFor="email" className="form-label">
                       Email
                     </label>
                     <input
@@ -81,15 +119,13 @@ export default function Payment() {
                       id="email"
                       placeholder="you@example.com"
                       value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                      }}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                     />
                   </div>
 
                   <div className="col-12">
-                    <label for="address" className="form-label">
+                    <label htmlFor="address" className="form-label">
                       Street
                     </label>
                     <input
@@ -98,66 +134,65 @@ export default function Payment() {
                       id="address"
                       placeholder="1234 Main St"
                       value={street}
-                      onChange={(e) => {
-                        setStreet(e.target.value);
-                      }}
+                      onChange={(e) => setStreet(e.target.value)}
                       required
                     />
                   </div>
 
-                  <div className="col-md-4">
-                    <label for="city" className="form-label">
-                      City
-                    </label>
-                    <select
-                      className="form-select"
-                      id="city"
-                      required
-                      value={city}
-                      onChange={(e) => {
-                        setCity(e.target.value);
-                      }}
-                    >
-                      <option>Choose...</option>
-                      <option>Kanpur</option>
-                      <option>California</option>
-                    </select>
-                  </div>
+                  <div className="row g-3">
+                    <div className="col-md-4">
+                      <label htmlFor="city" className="form-label">
+                        City
+                      </label>
+                      <select
+                        className="form-select mt-2"
+                        id="city"
+                        required
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      >
+                        <option>Choose...</option>
+                        <option>Kanpur</option>
+                        <option>California</option>
+                      </select>
+                    </div>
 
-                  <div className="col-md-5">
-                    <label for="country" className="form-label">
-                      Country
-                    </label>
-                    <select
-                      className="form-select"
-                      id="country"
-                      required
-                      value={country}
-                      onChange={(e) => {
-                        setCountry(e.target.value);
-                      }}
-                    >
-                      <option value="">Choose...</option>
-                      <option>India</option>
-                      <option>United States</option>
-                    </select>
-                  </div>
+                    <div className="col-md-4">
+                      <label htmlFor="country" className="form-label">
+                        Country
+                      </label>
+                      <select
+                        className="form-select mt-2"
+                        id="country"
+                        required
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)}
+                      >
+                        <option value="">Choose...</option>
+                        <option>India</option>
+                        <option>United States</option>
+                      </select>
+                    </div>
 
-                  <div className="col-md-3">
-                    <label for="zip" className="form-label">
-                      Zip
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="zip"
-                      placeholder="12356"
-                      value={pincode}
-                      onChange={(e) => {
-                        setPincode(e.target.value);
-                      }}
-                      required
-                    />
+                    <div className="col-md-4">
+                      <label htmlFor="pincode" className="form-label">
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control mt-2"
+                        id="pincode"
+                        placeholder="12356"
+                        value={pincode}
+                        onChange={(e) => {
+                          if (e.target.value.length > 15) {
+                            return;
+                          }
+                          setPincode(e.target.value);
+                        }}
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -169,7 +204,7 @@ export default function Payment() {
                     className="form-check-input"
                     id="same-address"
                   />
-                  <label className="form-check-label" for="same-address">
+                  <label className="form-check-label" htmlFor="same-address">
                     Shipping address is the same as my billing address
                   </label>
                 </div>
@@ -183,14 +218,12 @@ export default function Payment() {
                     <input
                       id="card"
                       name="paymentMethod"
-                      type="checkbox"
+                      type="radio"
                       className="form-check-input"
-                      required
-                      onClick={() => {
-                        setPaymentMethod("card");
-                      }}
+                      checked={paymentMethod === "card"}
+                      onChange={() => handlePaymentMethodChange("card")}
                     />
-                    <label className="form-check-label" for="card">
+                    <label className="form-check-label" htmlFor="card">
                       Card
                     </label>
                   </div>
@@ -198,23 +231,24 @@ export default function Payment() {
                     <input
                       id="cash-on-delivery"
                       name="paymentMethod"
-                      type="checkbox"
+                      type="radio"
                       className="form-check-input"
-                      required
-                      onClick={() => {
-                        setPaymentMethod("cash");
-                      }}
+                      checked={paymentMethod === "cash"}
+                      onChange={() => handlePaymentMethodChange("cash")}
                     />
-                    <label className="form-check-label" for="cash-on-delivery">
+                    <label
+                      className="form-check-label"
+                      htmlFor="cash-on-delivery"
+                    >
                       Cash on Delivery
                     </label>
                   </div>
                 </div>
 
-                {paymentMethod === "card" ? (
+                {paymentMethod === "card" && (
                   <div className="row gy-3">
                     <div className="col-md-6">
-                      <label for="cc-name" className="form-label">
+                      <label htmlFor="cc-name" className="form-label">
                         Name on card
                       </label>
                       <input
@@ -222,25 +256,47 @@ export default function Payment() {
                         className="form-control"
                         id="cc-name"
                         placeholder="Full Name"
+                        onChange={(e) => {
+                          if (e.target.value.length === 0) {
+                            setValidateName(false);
+                          }
+                          setValidateName(true);
+                        }}
                         required
                       />
                     </div>
                     <div className="col-md-6">
-                      <label for="cc-number" className="form-label">
-                        Credit card number
+                      <label htmlFor="cc-number" className="form-label">
+                        Card number
                       </label>
                       <input
                         type="text"
                         className="form-control"
                         id="cc-number"
-                        placeholder="1234 1234 1234 1234"
+                        placeholder="XXXX-XXXX-XXXX-XXXX"
                         required
-                        minLength="16"
+                        pattern="\d{4}-\d{4}-\d{4}-\d{4}"
+                        onChange={(e) => {
+                          if (e.target.value.length === 0) {
+                            setValidateCNo(false);
+                          }
+                          setValidateCNo(true);
+
+                          let inp = e.target.value;
+                          inp = inp.replace(/\D/g, "");
+                          inp = inp.replace(/(.{4})/g, "$1-").trim();
+                          if (inp.endsWith("-")) {
+                            inp = inp.slice(0, -1);
+                          }
+                          e.target.value = inp;
+                        }}
+                        minLength="19"
+                        maxlength="19"
                       />
                     </div>
 
-                    <div className="col-md-3">
-                      <label for="cc-expiration" className="form-label">
+                    <div className="col-md-6">
+                      <label htmlFor="cc-expiration" className="form-label">
                         Expiration
                       </label>
                       <input
@@ -249,12 +305,27 @@ export default function Payment() {
                         id="cc-expiration"
                         placeholder="MM/YY"
                         required
-                        minLength="4"
+                        pattern="\d{2}/\d{2}"
+                        onChange={(e) => {
+                          if (e.target.value.length === 0) {
+                            setValidateDate(false);
+                          }
+                          setValidateDate(true);
+
+                          let inp = e.target.value;
+                          inp = inp.replace(/\D/g, "");
+                          if (inp.length > 2) {
+                            inp = inp.replace(/(\d{2})(\d{0,2})/, "$1/$2");
+                          }
+                          e.target.value = inp;
+                        }}
+                        maxlength="5"
+                        minLength="5"
                       />
                     </div>
 
-                    <div className="col-md-3">
-                      <label for="cc-cvv" className="form-label">
+                    <div className="col-md-6">
+                      <label htmlFor="cc-cvv" className="form-label">
                         CVV
                       </label>
                       <input
@@ -263,12 +334,25 @@ export default function Payment() {
                         id="cc-cvv"
                         placeholder="CVV"
                         required
+                        pattern="\d{3,4}"
+                        onChange={(e) => {
+                          if (e.target.value.length === 0) {
+                            setValidateCVV(false);
+                          }
+                          setValidateCVV(true);
+
+                          let inp = e.target.value;
+                          inp = inp.replace(/\D/g, "");
+                          if (inp.length > 4) {
+                            return;
+                          }
+                          e.target.value = inp;
+                        }}
                         minLength="4"
+                        maxlength="4"
                       />
                     </div>
                   </div>
-                ) : (
-                  ""
                 )}
 
                 <hr className="my-4" />
@@ -276,11 +360,8 @@ export default function Payment() {
                 <button
                   className="w-100 btn btn-primary btn-lg mb-5"
                   type="submit"
-                  onClick={() => {
-                    setPaid(true);
-                  }}
                 >
-                  {paid ? "Paid" : `Pay Rs. ${amount} /-`}
+                  {paid ? "Paid" : "Pay"} Rs. {amount} /-
                 </button>
               </form>
             </div>

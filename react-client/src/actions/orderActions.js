@@ -1,20 +1,19 @@
 import axios from "axios";
 
+const url = process.env.REACT_APP_BACKEND_URL;
+
 export const placeOrder = (token, subtotal) => async (dispatch, getState) => {
   dispatch({ type: "PLACE_ORDER_REQUEST" });
   const currentUser = getState().loginUserReducer.currentUser;
   const cartItems = getState().cartReducer.cartItems;
 
   try {
-    const res = await axios.post(
-      "http://localhost:5555/api/orders/placeorder",
-      {
-        token,
-        subtotal,
-        currentUser,
-        cartItems,
-      }
-    );
+    const res = await axios.post(`${url}/api/orders/placeorder`, {
+      token,
+      subtotal,
+      currentUser,
+      cartItems,
+    });
     console.log(res);
     localStorage.removeItem("cartItems");
     localStorage.removeItem("subtotal");
@@ -31,12 +30,9 @@ export const getUserOrders = () => async (dispatch, getState) => {
   dispatch({ type: "GET_USER_ORDERS_REQUEST" });
 
   try {
-    const res = await axios.post(
-      "http://localhost:5555/api/orders/getuserorders",
-      {
-        userid: currentUser._id,
-      }
-    );
+    const res = await axios.post(`${url}/api/orders/getuserorders`, {
+      userid: currentUser._id,
+    });
     dispatch({ type: "GET_USER_ORDERS_SUCCESS", payload: res.data });
   } catch (err) {
     dispatch({ type: "GET_USER_ORDERS_FAILED", payload: err });
@@ -48,9 +44,7 @@ export const getAllOrders = () => async (dispatch, getState) => {
   dispatch({ type: "GET_ALL_ORDERS_REQUEST" });
 
   try {
-    const res = await axios.get(
-      "http://localhost:5555/api/orders/getallorders"
-    );
+    const res = await axios.get(`${url}/api/orders/getallorders`);
     dispatch({ type: "GET_ALL_ORDERS_SUCCESS", payload: res.data });
   } catch (err) {
     dispatch({ type: "GET_ALL_ORDERS_FAILED", payload: err });
@@ -59,15 +53,10 @@ export const getAllOrders = () => async (dispatch, getState) => {
 
 export const deliverOrder = (orderid) => async (dispatch) => {
   try {
-    const res = await axios.post(
-      "http://localhost:5555/api/orders/deliverorder",
-      { orderid }
-    );
+    const res = await axios.post(`${url}/api/orders/deliverorder`, { orderid });
     console.log(res);
     alert("Order Deliered");
-    const orders = await axios.get(
-      "http://localhost:5555/api/orders/getallorders"
-    );
+    const orders = await axios.get(`${url}/api/orders/getallorders`);
     dispatch({ type: "GET_ALL_ORDERS_SUCCESS", payload: orders.data });
   } catch (err) {
     console.log(err);
@@ -76,7 +65,7 @@ export const deliverOrder = (orderid) => async (dispatch) => {
 
 export const deleteOrder = (orderid) => async (dispatch) => {
   try {
-    await axios.post("http://localhost:5555/api/orders/deleteorder", {
+    await axios.post(`${url}/api/orders/deleteorder`, {
       orderid,
     });
     alert("Order Deleted Scuccessfully.");

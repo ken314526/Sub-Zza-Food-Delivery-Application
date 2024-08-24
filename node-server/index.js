@@ -1,14 +1,22 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 const db = require("./db");
 const pizzasRoute = require("./routes/pizzasRoute");
 const userRoute = require("./routes/userRoute");
 const ordersRoute = require("./routes/ordersRoute");
 const cartRoute = require("./routes/cartRoute");
 const path = require("path");
+const morgan = require("morgan");
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    optionsSuccessStatus: 200,
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 

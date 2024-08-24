@@ -25,6 +25,7 @@ export default function Registerscreen() {
         password,
       };
       dispatch(registerUser(user));
+      window.location.href = "/login";
     }
   };
 

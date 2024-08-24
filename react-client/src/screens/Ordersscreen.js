@@ -5,13 +5,22 @@ import Error from "../component/Error";
 import Loading from "../component/Loading";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Link } from "react-router-dom";
 
 export default function Ordersscreen() {
   AOS.init();
 
   const dispatch = useDispatch();
   const orderState = useSelector((state) => state.getUserOrdersReducer);
+  const userState = useSelector((state) => state.loginUserReducer);
   const { orders, error, loading } = orderState;
+  const { currentUser } = userState;
+
+  useEffect(() => {
+    if (!currentUser) {
+      window.location.href = "/";
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     dispatch(getUserOrders());
@@ -23,7 +32,18 @@ export default function Ordersscreen() {
       <div className="row justify-content-center">
         {loading && <Loading />}
         {error && <Error error="Something Went Wrong." />}
-        {orders &&
+        {orders.length === 0 ? (
+          <div className="container text-center py-5">
+            <div className="row">
+              <div className="col">
+                <h1 className="display-4">No orders made yet.</h1>
+                <Link to="/" className="btn">
+                  Order Pizza Now!
+                </Link>
+              </div>
+            </div>
+          </div>
+        ) : (
           orders.map((order) => {
             return (
               <div
@@ -67,7 +87,8 @@ export default function Ordersscreen() {
                 </div>
               </div>
             );
-          })}
+          })
+        )}
       </div>
     </div>
   );

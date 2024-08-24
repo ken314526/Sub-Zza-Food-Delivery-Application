@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function AdminNavbar() {
+  const userState = useSelector((state) => state.loginUserReducer);
+  const { currentUser } = userState;
+
+  useEffect(() => {
+    if (!currentUser || !currentUser.isAdmin) {
+      window.location.href = "/";
+    }
+  }, [currentUser]);
+
   return (
     <div>
       <div className="row justify-content-center m-2 p-3 shadow-lg p-3 mb-5 bg-white rounded">

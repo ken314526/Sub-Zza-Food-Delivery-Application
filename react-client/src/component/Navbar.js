@@ -15,20 +15,21 @@ export default function Navbar() {
           <a className="navbar-brand" href="/">
             SUB-ZZA
           </a>
+
           <button
-            className="navbar-toggler"
+            class="navbar-toggler ms-auto"
             type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
+            data-bs-toggle="collapse"
+            data-bs-target="#navNavBar"
+            aria-controls="navNavBar"
             aria-expanded="false"
             aria-label="Toggle navigation"
-            style={{ boxShadow: "none" }}
           >
-            <span className="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
           </button>
-          <div id="navbarNav">
-            <ul className="navbar-nav ms-auto">
+
+          <div class="collapse navbar-collapse ms-auto" id="navNavBar">
+            <ul class="navbar-nav ms-auto">
               <li className="nav-item">
                 {currentUser ? (
                   <div className="dropdown mt-2">
@@ -72,7 +73,7 @@ export default function Navbar() {
                 )}
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/cart">
+                <a className="nav-link" href="/cart" style={{ color: "gray" }}>
                   Cart ({cartState.cartItems ? cartState.cartItems.length : 0})
                 </a>
               </li>

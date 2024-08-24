@@ -12,7 +12,7 @@ export default function Pizza({ pizza }) {
   AOS.init();
 
   const [quantity, setQuantity] = useState(1);
-  const [varient, setVarient] = useState("small");
+  const [variant, setvariant] = useState("small");
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
@@ -23,7 +23,7 @@ export default function Pizza({ pizza }) {
     toast.info("Added to cart!", {
       autoClose: 3000,
     });
-    dispatch(addToCart(pizza, quantity, varient));
+    dispatch(addToCart(pizza, quantity, variant));
   };
 
   return (
@@ -38,18 +38,18 @@ export default function Pizza({ pizza }) {
       </div>
       <div className="flex-container">
         <div className="m-1 w-100">
-          <p>Varients</p>
+          <p>variants</p>
           <select
             className="form-control"
-            value={varient}
+            value={variant}
             onChange={(e) => {
-              setVarient(e.target.value);
+              setvariant(e.target.value);
             }}
           >
-            {pizza.varients.map((varient) => {
+            {pizza.variants.map((variant) => {
               return (
-                <option key={varient} value={varient}>
-                  {varient}
+                <option key={variant} value={variant}>
+                  {variant}
                 </option>
               );
             })}
@@ -77,7 +77,7 @@ export default function Pizza({ pizza }) {
       <div className="flex-container">
         <div className="m-1 w-100">
           <h1 className="mt-2">
-            Price: {pizza.prices[0][varient] * quantity} Rs/-
+            Price: {pizza.prices[0][variant] * quantity} Rs/-
           </h1>
         </div>
         <div className="m-1 w-100">

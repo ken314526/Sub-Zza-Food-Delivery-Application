@@ -16,7 +16,7 @@ router.post("/addpizza", async (req, res, next) => {
     const newPizza = new Pizza({
       name: pizza.name,
       image: pizza.image,
-      varients: ["small", "medium", "large"],
+      variants: ["small", "medium", "large"],
       description: pizza.description,
       category: pizza.category,
       prices: [pizza.prices],

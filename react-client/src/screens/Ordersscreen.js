@@ -59,7 +59,7 @@ export default function Ordersscreen() {
                       return (
                         <div>
                           <p>
-                            {item.name} [{item.varient}] * {item.quantity} ={" "}
+                            {item.name} [{item.variant}] * {item.quantity} ={" "}
                             {item.price}
                           </p>
                         </div>

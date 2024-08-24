@@ -88,7 +88,7 @@ export default function Editpizza({ match }) {
             onChange={(e) => {
               setSmallPrice(e.target.value);
             }}
-            placeholder="Small Varient Price"
+            placeholder="Small variant Price"
           />
           <input
             type="text"
@@ -97,7 +97,7 @@ export default function Editpizza({ match }) {
             onChange={(e) => {
               setMediumPrice(e.target.value);
             }}
-            placeholder="Medium Varient Price"
+            placeholder="Medium variant Price"
           />
           <input
             type="text"
@@ -106,7 +106,7 @@ export default function Editpizza({ match }) {
             onChange={(e) => {
               setLargePrice(e.target.value);
             }}
-            placeholder="Large Varient Price"
+            placeholder="Large variant Price"
           />
           <input
             type="text"

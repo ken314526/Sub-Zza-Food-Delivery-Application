@@ -48,10 +48,10 @@ export default function Cartscreen() {
                   <div className="flex-container">
                     <div className="text-start m-1 w-100">
                       <h1>
-                        {item.name} [{item.varient}]
+                        {item.name} [{item.variant}]
                       </h1>
                       <h1>
-                        Price : {item.quantity} * {item.prices[0][item.varient]}{" "}
+                        Price : {item.quantity} * {item.prices[0][item.variant]}{" "}
                         = {item.price}
                       </h1>
                       <h1 style={{ display: "inline" }}>Quantity : </h1>
@@ -63,7 +63,7 @@ export default function Cartscreen() {
                             addToCart(
                               item,
                               Number(item.quantity) + 1,
-                              item.varient
+                              item.variant
                             )
                           );
                         }}
@@ -77,7 +77,7 @@ export default function Cartscreen() {
                             addToCart(
                               item,
                               Number(item.quantity) - 1,
-                              item.varient
+                              item.variant
                             )
                           );
                         }}

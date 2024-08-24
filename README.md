@@ -15,6 +15,8 @@ A full-stack web application for online pizza delivery, built using ReactJS, Nod
 
 SUB-ZZA Pizza Delivery is an online pizza ordering and delivery platform designed to provide users with a seamless and enjoyable experience. It incorporates modern web technologies to facilitate easy navigation, secure user authentication, and efficient order processing.
 
+Deployed link: https://sub-zza-food-delivery-application-frontend.vercel.app/
+
 ## Features
 
 - `User Authentication:` Secure registration and login system with password hashing for enhanced security.
